@@ -7,7 +7,11 @@ exports.default = aukLimosa;
 
 var _limosa = require('limosa');
 
-function aukLimosa(routerBuilder, controllers) {
+/**
+ * @function
+ * @param routerBuilder
+ * @param controllers
+*/function aukLimosa(routerBuilder, controllers) {
     if (!controllers instanceof Map) {
         throw new Error('controllers should be a Map');
     }
@@ -20,7 +24,9 @@ function aukLimosa(routerBuilder, controllers) {
         routerBuilder(builder);
         var router = app.router = builder.router;
 
-        app.context.urlGenerator = function () {
+        app.context.urlGenerator = /**
+                                    * @function
+                                   */function () {
             return router.urlGenerator.apply(router, [this.language].concat(Array.prototype.slice.call(arguments)));
         };
 
@@ -32,7 +38,11 @@ function aukLimosa(routerBuilder, controllers) {
          * @param {string} actionName
          * @returns {*}
          */
-        app.context.callAction = function (controllerName, actionName) {
+        app.context.callAction = /**
+                                  * @function
+                                  * @param controllerName
+                                  * @param actionName
+                                 */function (controllerName, actionName) {
             var route = this.route;
 
             if (!actionName) {

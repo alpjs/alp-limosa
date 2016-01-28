@@ -36,13 +36,13 @@ export default function aukLimosa(routerBuilder, controllers) {
             const controller = controllers.get(controllerName);
             if (!controller) {
                 this.status = 404;
-                throw new Error('Controller not found: ' + controllerName);
+                throw new Error(`Controller not found: ${controllerName}`);
             }
 
             const action = controller[actionName];
             if (!action/* || !action.isAction*/) {
                 this.status = 404;
-                throw new Error('Action not found: ' + route.controller + '.' + route.action);
+                throw new Error(`Action not found: ${route.controller}.${route.action}`);
             }
 
             try {
@@ -57,13 +57,13 @@ export default function aukLimosa(routerBuilder, controllers) {
 
             if (!route) {
                 ctx.status = 404;
-                throw new Error('Route not found: ' + ctx.path);
+                throw new Error(`Route not found: ${ctx.path}`);
             }
 
             const controller = app.controllers.get(route.controller);
             if (!controller) {
                 ctx.status = 404;
-                throw new Error('Controller not found: ' + route.controller);
+                throw new Error(`Controller not found: ${route.controller}`);
             }
 
             ctx.route = route;
