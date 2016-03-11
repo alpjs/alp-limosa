@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/alpjs/alp-limosa#readme",
   "devDependencies": {
-    "springbokjs-library": "^13.5.0"
+    "eslint": "~2.2.0",
+    "springbokjs-library": "^16.0.0"
   },
   "dependencies": {
     "limosa": "^2.0.2"

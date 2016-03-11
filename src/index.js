@@ -1,6 +1,6 @@
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
-export default function aukLimosa(routerBuilder, controllers) {
+export default function alpLimosa(routerBuilder, controllers) {
     if (!controllers instanceof Map) {
         throw new Error('controllers should be a Map');
     }
@@ -14,7 +14,7 @@ export default function aukLimosa(routerBuilder, controllers) {
         const router = app.router = builder.router;
 
         app.context.urlGenerator = function () {
-            return router.urlGenerator(this.language, ...arguments);
+            return router.urlGenerator(this.language, ...arguments); // eslint-disable-line prefer-rest-params
         };
 
         app.controllers = controllers;
