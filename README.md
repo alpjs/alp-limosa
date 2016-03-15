@@ -7,6 +7,7 @@ limosa router in koa / alp / ibex
 ```js
 import Koa from 'koa';
 import config from 'alp-config';
+import language from 'alp-language';
 import router from 'alp-limosa';
 import routerBuilder from './routerBuilder';
 
@@ -15,6 +16,7 @@ const controllers = new Map();
 
 const app = new Koa();
 config(__dirname + '/config')(app);
+language(app);
 const handler = router(routerBuilder, controllers)(app);
 
 // app.use(serve(__dirname + '../public/')); // static files
@@ -26,6 +28,7 @@ app.use(handler);
 ```js
 import Ibex from 'ibex';
 import config from 'alp-config';
+import language from 'alp-language';
 import router from 'alp-limosa';
 import routerBuilder from './routerBuilder';
 
@@ -34,6 +37,7 @@ const controllers = new Map();
 
 const app = new Ibex();
 config(__dirname + '/config')(app);
+language(app);
 const handler = router(routerBuilder, controllers)(app);
 
 app.use(handler);
