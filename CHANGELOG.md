@@ -1,3 +1,7 @@
+### v2.1.2
+
+- [`a213f4f`](https://github.com/alpjs/alp-limosa/commit/a213f4f64587b2e1255148eadc703ee58399dccf) fix browser main (Christophe Hurpeau)
+
 ### v2.1.1
 
 - [`624b456`](https://github.com/alpjs/alp-limosa/commit/624b456282f34b6513d3a9d0eab0fcb3bff4fb0e) readme add required alp-language (Christophe Hurpeau)
