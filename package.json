@@ -28,6 +28,6 @@
     "springbokjs-library": "^16.1.1"
   },
   "dependencies": {
-    "limosa": "^2.0.2"
+    "limosa": "^2.0.3"
   }
 }

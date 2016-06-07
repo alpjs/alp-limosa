@@ -77,12 +77,6 @@ var _limosa = require('limosa');
                 throw new Error('Route not found: ' + ctx.path);
             }
 
-            var controller = app.controllers.get(route.controller);
-            if (!controller) {
-                ctx.status = 404;
-                throw new Error('Controller not found: ' + route.controller);
-            }
-
             ctx.route = route;
 
             return ctx.callAction(route.controller, route.action);
