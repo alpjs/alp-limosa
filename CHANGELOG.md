@@ -1,3 +1,3 @@
-### v2.2.0
+### v2.2.1
 
-- [`1803a76`](https://github.com/alpjs/alp-limosa/commit/1803a76c67829fad07672fb765e055e85a9db80f) pob (Christophe Hurpeau)
+- [`ff04004`](https://github.com/alpjs/alp-limosa/commit/ff04004834b7c78252248a7df7b3003ea66683cc) fix main (Christophe Hurpeau)
