@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/alpjs/alp-limosa/issues"
   },
-  "main": "lib/index.js",
+  "main": "index.js",
   "webpack:main": "./lib-webpack/index.js",
   "webpack:main-dev": "./lib-webpack-dev/index.js",
   "webpack:main-modern-browsers": "./lib-webpack-modern-browsers/index.js",
