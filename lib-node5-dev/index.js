@@ -7,11 +7,7 @@ exports.default = alpLimosa;
 
 var _limosa = require('limosa');
 
-/**
- * @function
- * @param routerBuilder
- * @param controllers
-*/function alpLimosa(routerBuilder, controllers) {
+function alpLimosa(routerBuilder, controllers) {
     if (!controllers instanceof Map) {
         throw new Error('controllers should be a Map');
     }
@@ -24,9 +20,7 @@ var _limosa = require('limosa');
         routerBuilder(builder);
         const router = app.router = builder.router;
 
-        app.context.urlGenerator = /**
-                                    * @function
-                                   */function () {
+        app.context.urlGenerator = function () {
             return router.urlGenerator(this.language, ...arguments); // eslint-disable-line prefer-rest-params
         };
 
@@ -38,11 +32,7 @@ var _limosa = require('limosa');
          * @param {string} actionName
          * @returns {*}
          */
-        app.context.callAction = /**
-                                  * @function
-                                  * @param controllerName
-                                  * @param actionName
-                                 */function (controllerName, actionName) {
+        app.context.callAction = function (controllerName, actionName) {
             const route = this.route;
 
             if (!actionName) {
