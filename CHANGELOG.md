@@ -1,3 +1,7 @@
+### v2.2.2
+
+- [`88f7d60`](https://github.com/alpjs/alp-limosa/commit/88f7d60ef45b1ab87e84cc5d0170a3748409a044) limosa@2.0.4 (Christophe Hurpeau)
+
 ### v2.2.1
 
 - [`ff04004`](https://github.com/alpjs/alp-limosa/commit/ff04004834b7c78252248a7df7b3003ea66683cc) fix main (Christophe Hurpeau)
@@ -27,6 +31,3 @@
 - [`bf8fbd1`](https://github.com/alpjs/alp-limosa/commit/bf8fbd16229aee19593f28da0a0121d6dbb9ec93) upgrade limosa to fix browser field in package.json (Christophe Hurpeau)
 
 ### v2.0.0
-
-
-
