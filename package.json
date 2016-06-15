@@ -31,7 +31,7 @@
     "watch:dev": "pob-watch"
   },
   "dependencies": {
-    "limosa": "^2.0.3"
+    "limosa": "^2.0.4"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
@@ -48,8 +48,8 @@
     "eslint": "^2.12.0",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-config-pob": "^6.1.1",
-    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-import": "^1.8.1",
     "pob-babel": "^0.4.1",
-    "pob-release": "^2.0.3"
+    "pob-release": "^2.0.5"
   }
 }
