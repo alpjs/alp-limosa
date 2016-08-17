@@ -1,3 +1,7 @@
+### v2.2.3
+
+- [`dc609d8`](https://github.com/alpjs/alp-limosa/commit/dc609d882515ce0851e5fef13bc0d52a8cb0e9e0) update dependencies (Christophe Hurpeau)
+
 ### v2.2.2
 
 - [`88f7d60`](https://github.com/alpjs/alp-limosa/commit/88f7d60ef45b1ab87e84cc5d0170a3748409a044) limosa@2.0.4 (Christophe Hurpeau)
