@@ -1,5 +1,7 @@
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
+export { RouterBuilder } from 'limosa';
+
 export default function alpLimosa(routerBuilder, controllers) {
     if (!(controllers instanceof Map)) {
         throw new Error('controllers should be a Map');

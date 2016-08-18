@@ -3,10 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.default = alpLimosa;
+exports.RouterBuilder = undefined;
 
 var _limosa = require('limosa');
 
+Object.defineProperty(exports, 'RouterBuilder', {
+    enumerable: true,
+    get: function get() {
+        return _limosa.RouterBuilder;
+    }
+});
+exports.default = alpLimosa;
 function alpLimosa(routerBuilder, controllers) {
     if (!(controllers instanceof Map)) {
         throw new Error('controllers should be a Map');
