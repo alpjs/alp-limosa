@@ -1,3 +1,7 @@
+### v2.4.0
+
+- [`0df6dbb`](https://github.com/alpjs/alp-limosa/commit/0df6dbb835753f218abd0c98df08faf8710580df) registerBrowserContextTransformer (Christophe Hurpeau)
+
 ### v2.3.0
 
 - [`04764f5`](https://github.com/alpjs/alp-limosa/commit/04764f554f09bd668158d6d1c258d8854a0a5c10) export RouterBuilder (Christophe Hurpeau)
