@@ -1,3 +1,5 @@
+/* global BROWSER */
+
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
 export { RouterBuilder } from 'limosa';
@@ -24,6 +26,12 @@ export default function alpLimosa(routerBuilder, controllers) {
         };
 
         app.controllers = controllers;
+
+        if (!BROWSER) {
+            app.registerBrowserContextTransformer((initialBrowserContext, ctx) => (
+                initialBrowserContext.route = ctx.route
+            ));
+        }
 
         /**
          *

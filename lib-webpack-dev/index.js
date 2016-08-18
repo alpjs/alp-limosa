@@ -1,3 +1,5 @@
+/* global BROWSER */
+
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
 export { RouterBuilder } from 'limosa';

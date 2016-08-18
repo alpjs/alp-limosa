@@ -37,6 +37,12 @@ function alpLimosa(routerBuilder, controllers) {
 
         app.controllers = controllers;
 
+        {
+            app.registerBrowserContextTransformer((initialBrowserContext, ctx) => {
+                return initialBrowserContext.route = ctx.route;
+            });
+        }
+
         /**
          *
          * @param {string} controllerName
