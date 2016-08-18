@@ -23,7 +23,7 @@
     "clean": "rm -Rf docs dist test/node6 coverage",
     "lint": "eslint --fix -c .eslintrc.yml src/",
     "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit || echo",
-    "preversion": "npm run lint && npm run build && npm run build && pob-repository-check-clean",
+    "preversion": "npm run lint && npm run build && pob-repository-check-clean",
     "release": "pob-repository-check-clean && pob-release",
     "test": "make test",
     "version": "pob-version",

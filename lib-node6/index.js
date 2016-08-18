@@ -64,7 +64,7 @@ function alpLimosa(routerBuilder, controllers) {
         };
 
         return ctx => {
-            let route = router.find(ctx.path);
+            let route = router.find(ctx.path, ctx.language);
 
             if (!route) {
                 ctx.status = 404;
