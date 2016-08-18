@@ -1,3 +1,7 @@
+### v2.3.0
+
+- [`04764f5`](https://github.com/alpjs/alp-limosa/commit/04764f554f09bd668158d6d1c258d8854a0a5c10) export RouterBuilder (Christophe Hurpeau)
+
 ### v2.2.4
 
 - [`a6f0967`](https://github.com/alpjs/alp-limosa/commit/a6f09677636d4b4b3cf3c3e0b19011984d5f5854) fix route missing language (Christophe Hurpeau)
