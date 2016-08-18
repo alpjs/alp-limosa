@@ -1,3 +1,7 @@
+### v2.2.4
+
+- [`a6f0967`](https://github.com/alpjs/alp-limosa/commit/a6f09677636d4b4b3cf3c3e0b19011984d5f5854) fix route missing language (Christophe Hurpeau)
+
 ### v2.2.3
 
 - [`dc609d8`](https://github.com/alpjs/alp-limosa/commit/dc609d882515ce0851e5fef13bc0d52a8cb0e9e0) update dependencies (Christophe Hurpeau)
