@@ -7,7 +7,7 @@
   ],
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "license": "ISC",
-  "repository": "alpjs/alp-limosa",
+  "repository": "git@github.com:alpjs/alp-limosa.git",
   "homepage": "https://github.com/alpjs/alp-limosa#readme",
   "bugs": {
     "url": "https://github.com/alpjs/alp-limosa/issues"
@@ -21,8 +21,8 @@
     "build": "pob-build",
     "build:dev": "pob-build",
     "clean": "rm -Rf docs dist test/node6 coverage",
-    "lint": "eslint --fix -c .eslintrc.yml src/",
-    "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit || echo",
+    "lint": "eslint --ext .js,.jsx --fix src/",
+    "prepublish": "ln -s ../../git-hooks/pre-commit .git/hooks/pre-commit 2>/dev/null || true ; ln -s ../../git-hooks/post-checkout .git/hooks/post-checkout 2>/dev/null || true ; ln -s ../../git-hooks/post-merge .git/hooks/post-merge 2>/dev/null || true",
     "preversion": "npm run lint && npm run build && pob-repository-check-clean",
     "release": "pob-repository-check-clean && pob-release",
     "test": "make test",
@@ -31,7 +31,7 @@
     "watch:dev": "pob-watch"
   },
   "dependencies": {
-    "limosa": "^2.0.5"
+    "limosa": "^2.0.6"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
@@ -43,10 +43,10 @@
     "babel-preset-stage-1": "^6.13.0",
     "eslint": "^3.3.1",
     "eslint-config-airbnb-base": "^5.0.2",
-    "eslint-config-pob": "^6.1.6",
+    "eslint-config-pob": "^7.0.1",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-import": "^1.13.0",
-    "pob-babel": "^7.1.2",
-    "pob-release": "^2.1.0"
+    "pob-babel": "^7.2.0",
+    "pob-release": "^2.1.1"
   }
 }
