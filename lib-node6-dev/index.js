@@ -14,23 +14,21 @@ Object.defineProperty(exports, 'RouterBuilder', {
   }
 });
 exports.default = alpLimosa;
-function alpLimosa(routerBuilder, controllers) {
-  if (!(typeof routerBuilder === 'function')) {
-    throw new TypeError('Value of argument "routerBuilder" violates contract.\n\nExpected:\nFunction\n\nGot:\n' + _inspect(routerBuilder));
-  }
 
-  if (!(controllers instanceof Map)) {
-    throw new TypeError('Value of argument "controllers" violates contract.\n\nExpected:\nMap\n\nGot:\n' + _inspect(controllers));
-  }
+var _tcombForked = require('tcomb-forked');
+
+var _tcombForked2 = _interopRequireDefault(_tcombForked);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function alpLimosa(routerBuilder, controllers) {
+  _assert(routerBuilder, _tcombForked2.default.Function, 'routerBuilder');
+
+  _assert(controllers, Map, 'controllers');
 
   return app => {
     const config = app.config;
-    const routeTranslationsConfig = config.get('routeTranslations');
-
-    if (!(routeTranslationsConfig instanceof Map)) {
-      throw new TypeError('Value of variable "routeTranslationsConfig" violates contract.\n\nExpected:\nMap\n\nGot:\n' + _inspect(routeTranslationsConfig));
-    }
-
+    const routeTranslationsConfig = _assert(config.get('routeTranslations'), Map, 'routeTranslationsConfig');
     const routeTranslations = new _limosa.RoutesTranslations(routeTranslationsConfig);
     const builder = new _limosa.RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
@@ -42,13 +40,9 @@ function alpLimosa(routerBuilder, controllers) {
     };
 
     app.context.redirectTo = function (to, params) {
-      if (!(typeof to === 'string')) {
-        throw new TypeError('Value of argument "to" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(to));
-      }
+      _assert(to, _tcombForked2.default.String, 'to');
 
-      if (!(params == null || params instanceof Object)) {
-        throw new TypeError('Value of argument "params" violates contract.\n\nExpected:\n?Object\n\nGot:\n' + _inspect(params));
-      }
+      _assert(params, _tcombForked2.default.maybe(_tcombForked2.default.Object), 'params');
 
       // eslint-disable-next-line prefer-rest-params
       return this.redirect(router.urlGenerator(this.language, to, params));
@@ -56,11 +50,7 @@ function alpLimosa(routerBuilder, controllers) {
 
     app.controllers = controllers;
 
-    {
-      app.registerBrowserContextTransformer((initialBrowserContext, ctx) => {
-        return initialBrowserContext.route = ctx.route;
-      });
-    }
+    app.registerBrowserContextTransformer((initialBrowserContext, ctx) => initialBrowserContext.route = ctx.route);
 
     /**
      *
@@ -69,13 +59,9 @@ function alpLimosa(routerBuilder, controllers) {
      * @returns {*}
      */
     app.context.callAction = function (controllerName, actionName) {
-      if (!(typeof controllerName === 'string')) {
-        throw new TypeError('Value of argument "controllerName" violates contract.\n\nExpected:\nstring\n\nGot:\n' + _inspect(controllerName));
-      }
+      _assert(controllerName, _tcombForked2.default.String, 'controllerName');
 
-      if (!(actionName == null || typeof actionName === 'string')) {
-        throw new TypeError('Value of argument "actionName" violates contract.\n\nExpected:\n?string\n\nGot:\n' + _inspect(actionName));
-      }
+      _assert(actionName, _tcombForked2.default.maybe(_tcombForked2.default.String), 'actionName');
 
       const route = this.route;
 
@@ -118,62 +104,21 @@ function alpLimosa(routerBuilder, controllers) {
   };
 }
 
-function _inspect(input, depth) {
-  const maxDepth = 4;
-  const maxKeys = 15;
-
-  if (depth === undefined) {
-    depth = 0;
+function _assert(x, type, name) {
+  function message() {
+    return 'Invalid value ' + _tcombForked2.default.stringify(x) + ' supplied to ' + name + ' (expected a ' + _tcombForked2.default.getTypeName(type) + ')';
   }
 
-  depth += 1;
+  if (_tcombForked2.default.isType(type)) {
+    if (!type.is(x)) {
+      type(x, [name + ': ' + _tcombForked2.default.getTypeName(type)]);
 
-  if (input === null) {
-    return 'null';
-  } else if (input === undefined) {
-    return 'void';
-  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    return typeof input;
-  } else if (Array.isArray(input)) {
-    if (input.length > 0) {
-      if (depth > maxDepth) return '[...]';
-
-      const first = _inspect(input[0], depth);
-
-      if (input.every(item => _inspect(item, depth) === first)) {
-        return first.trim() + '[]';
-      } else {
-        return '[' + input.slice(0, maxKeys).map(item => _inspect(item, depth)).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']';
-      }
-    } else {
-      return 'Array';
+      _tcombForked2.default.fail(message());
     }
-  } else {
-    const keys = Object.keys(input);
-
-    if (!keys.length) {
-      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-        return input.constructor.name;
-      } else {
-        return 'Object';
-      }
-    }
-
-    if (depth > maxDepth) return '{...}';
-    const indent = '  '.repeat(depth - 1);
-    let entries = keys.slice(0, maxKeys).map(key => {
-      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
-    }).join('\n  ' + indent);
-
-    if (keys.length >= maxKeys) {
-      entries += '\n  ' + indent + '...';
-    }
-
-    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
-      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
-    } else {
-      return '{\n  ' + indent + entries + '\n' + indent + '}';
-    }
+  } else if (!(x instanceof type)) {
+    _tcombForked2.default.fail(message());
   }
+
+  return x;
 }
 //# sourceMappingURL=index.js.map
