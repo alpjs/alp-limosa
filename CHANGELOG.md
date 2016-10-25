@@ -1,3 +1,8 @@
+### v2.5.0
+
+- [`aa34ec4`](https://github.com/alpjs/alp-limosa/commit/aa34ec4081d4633c67125343a821cb78653685d1) chore: pob update (Christophe Hurpeau)
+- [`ea6f09e`](https://github.com/alpjs/alp-limosa/commit/ea6f09e40d360b5b681da2c375f1ad0a27430ab2) refactor: build (Christophe Hurpeau)
+
 ### v2.4.1
 
 - [`566f298`](https://github.com/alpjs/alp-limosa/commit/566f298adaa80b69b0975551eb4b2b6e2ac1c759) limosa@2.0.6 and other dependency update (Christophe Hurpeau)
