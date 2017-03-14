@@ -1,5 +1,7 @@
 # alp-limosa
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/alpjs/alp-limosa.svg)](https://greenkeeper.io/)
+
 limosa router in koa / alp / ibex
 
 ## With Koa
