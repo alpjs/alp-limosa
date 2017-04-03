@@ -1,3 +1,7 @@
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/alpjs/alp-limosa/compare/v2.5.0...v2.6.0) (2017-04-03)
+
+
 ### v2.5.0
 
 - [`aa34ec4`](https://github.com/alpjs/alp-limosa/commit/aa34ec4081d4633c67125343a821cb78653685d1) chore: pob update (Christophe Hurpeau)
