@@ -2,12 +2,20 @@
 
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
+import t from 'flow-runtime';
 export { RouterBuilder } from 'limosa';
 
-export default function alpLimosa(routerBuilder: Function, controllers: Map) {
-  return (app) => {
+export default function alpLimosa(routerBuilder, controllers) {
+  let _routerBuilderType = t.function();
+
+  let _controllersType = t.ref('Map');
+
+  t.param('routerBuilder', _routerBuilderType).assert(routerBuilder);
+  t.param('controllers', _controllersType).assert(controllers);
+
+  return app => {
     const config = app.config;
-    const routeTranslationsConfig: Map = config.get('routeTranslations');
+    const routeTranslationsConfig = t.ref('Map').assert(config.get('routeTranslations'));
     const routeTranslations = new RoutesTranslations(routeTranslationsConfig);
     const builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
@@ -20,18 +28,21 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
       return router.urlGenerator(this.language, ...arguments);
     };
 
-    app.context.redirectTo = function (to: string, params: ?Object) {
+    app.context.redirectTo = function (to, params) {
+      let _toType = t.string();
+
+      let _paramsType = t.nullable(t.object());
+
+      t.param('to', _toType).assert(to);
+      t.param('params', _paramsType).assert(params);
+
       // eslint-disable-next-line prefer-rest-params
       return this.redirect(router.urlGenerator(this.language, to, params));
     };
 
     app.controllers = controllers;
 
-    if (!BROWSER) {
-      app.registerBrowserContextTransformer((initialBrowserContext, ctx) => (
-        initialBrowserContext.route = ctx.route
-      ));
-    }
+    app.registerBrowserContextTransformer((initialBrowserContext, ctx) => initialBrowserContext.route = ctx.route);
 
     /**
      *
@@ -39,12 +50,19 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
      * @param {string} [actionName]
      * @returns {*}
      */
-    app.context.callAction = function (controllerName: string, actionName: ?string) {
+    app.context.callAction = function (controllerName, actionName) {
+      let _controllerNameType = t.string();
+
+      let _actionNameType = t.nullable(t.string());
+
+      t.param('controllerName', _controllerNameType).assert(controllerName);
+      t.param('actionName', _actionNameType).assert(actionName);
+
       const route = this.route;
 
       if (!actionName) {
-        actionName = controllerName;
-        controllerName = route.controller;
+        actionName = _actionNameType.assert(controllerName);
+        controllerName = _controllerNameType.assert(route.controller);
       }
 
       const controller = controllers.get(controllerName);
@@ -54,10 +72,10 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
       }
 
       const action = controller[actionName];
-      if (!action/* || !action.isAction*/) {
-        this.status = 404;
-        throw new Error(`Action not found: ${route.controller}.${route.action}`);
-      }
+      if (!action /* || !action.isAction*/) {
+          this.status = 404;
+          throw new Error(`Action not found: ${route.controller}.${route.action}`);
+        }
 
       try {
         return Promise.resolve(controller[actionName].call(null, this));
@@ -66,7 +84,7 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
       }
     };
 
-    return (ctx) => {
+    return ctx => {
       let route = router.find(ctx.path, ctx.language);
 
       if (!route) {
@@ -80,3 +98,4 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
     };
   };
 }
+//# sourceMappingURL=index.js.map

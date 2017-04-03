@@ -1,22 +1,27 @@
-import _t from 'tcomb-forked';
 /* global BROWSER */
 
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
+import t from 'flow-runtime';
 export { RouterBuilder } from 'limosa';
 
 export default function alpLimosa(routerBuilder, controllers) {
-  _assert(routerBuilder, _t.Function, 'routerBuilder');
+  var _routerBuilderType = t.function();
 
-  _assert(controllers, Map, 'controllers');
+  var _controllersType = t.ref('Map');
+
+  t.param('routerBuilder', _routerBuilderType).assert(routerBuilder);
+  t.param('controllers', _controllersType).assert(controllers);
 
   return function (app) {
     var config = app.config;
-    var routeTranslationsConfig = config.get('routeTranslations');
+    var routeTranslationsConfig = t.ref('Map').assert(config.get('routeTranslations'));
     var routeTranslations = new RoutesTranslations(routeTranslationsConfig);
     var builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
-    var router = app.router = builder.router;
+    var router = builder.router;
+
+    app.router = router;
 
     app.context.urlGenerator = function () {
       // eslint-disable-next-line prefer-rest-params
@@ -24,9 +29,12 @@ export default function alpLimosa(routerBuilder, controllers) {
     };
 
     app.context.redirectTo = function (to, params) {
-      _assert(to, _t.String, 'to');
+      var _toType = t.string();
 
-      _assert(params, _t.maybe(_t.Object), 'params');
+      var _paramsType = t.nullable(t.object());
+
+      t.param('to', _toType).assert(to);
+      t.param('params', _paramsType).assert(params);
 
       // eslint-disable-next-line prefer-rest-params
       return this.redirect(router.urlGenerator(this.language, to, params));
@@ -41,15 +49,18 @@ export default function alpLimosa(routerBuilder, controllers) {
      * @returns {*}
      */
     app.context.callAction = function (controllerName, actionName) {
-      _assert(controllerName, _t.String, 'controllerName');
+      var _controllerNameType = t.string();
 
-      _assert(actionName, _t.maybe(_t.String), 'actionName');
+      var _actionNameType = t.nullable(t.string());
+
+      t.param('controllerName', _controllerNameType).assert(controllerName);
+      t.param('actionName', _actionNameType).assert(actionName);
 
       var route = this.route;
 
       if (!actionName) {
-        actionName = controllerName;
-        controllerName = route.controller;
+        actionName = _actionNameType.assert(controllerName);
+        controllerName = _controllerNameType.assert(route.controller);
       }
 
       var controller = controllers.get(controllerName);
@@ -84,23 +95,5 @@ export default function alpLimosa(routerBuilder, controllers) {
       return ctx.callAction(route.controller, route.action);
     };
   };
-}
-
-function _assert(x, type, name) {
-  function message() {
-    return 'Invalid value ' + _t.stringify(x) + ' supplied to ' + name + ' (expected a ' + _t.getTypeName(type) + ')';
-  }
-
-  if (_t.isType(type)) {
-    if (!type.is(x)) {
-      type(x, [name + ': ' + _t.getTypeName(type)]);
-
-      _t.fail(message());
-    }
-  } else if (!(x instanceof type)) {
-    _t.fail(message());
-  }
-
-  return x;
 }
 //# sourceMappingURL=index.js.map

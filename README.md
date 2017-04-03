@@ -1,6 +1,9 @@
-# alp-limosa
+# alp-limosa [![NPM version][npm-image]][npm-url]
 
-limosa router in koa / alp / ibex
+router limosa in alp
+
+[![Dependency ci Status][dependencyci-image]][dependencyci-url]
+[![Dependency Status][daviddm-image]][daviddm-url]
 
 ## With Koa
 
@@ -55,3 +58,10 @@ const controllers = new Map();
 const app = new Alp();
 app.useRouter(routerBuilder, controllers);
 ```
+
+[npm-image]: https://img.shields.io/npm/v/alp-limosa.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/alp-limosa
+[daviddm-image]: https://david-dm.org/alpjs/alp-limosa.svg?style=flat-square
+[daviddm-url]: https://david-dm.org/alpjs/alp-limosa
+[dependencyci-image]: https://dependencyci.com/github/alpjs/alp-limosa/badge?style=flat-square
+[dependencyci-url]: https://dependencyci.com/github/alpjs/alp-limosa

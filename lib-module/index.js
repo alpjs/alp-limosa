@@ -11,7 +11,9 @@ export default function alpLimosa(routerBuilder, controllers) {
     var routeTranslations = new RoutesTranslations(routeTranslationsConfig);
     var builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
-    var router = app.router = builder.router;
+    var router = builder.router;
+
+    app.router = router;
 
     app.context.urlGenerator = function () {
       // eslint-disable-next-line prefer-rest-params

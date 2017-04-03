@@ -6,12 +6,14 @@ export { RouterBuilder } from 'limosa';
 
 export default function alpLimosa(routerBuilder, controllers) {
   return app => {
-    var config = app.config;
-    var routeTranslationsConfig = config.get('routeTranslations');
-    var routeTranslations = new RoutesTranslations(routeTranslationsConfig);
-    var builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
+    const config = app.config;
+    const routeTranslationsConfig = config.get('routeTranslations');
+    const routeTranslations = new RoutesTranslations(routeTranslationsConfig);
+    const builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
-    var router = app.router = builder.router;
+    const router = builder.router;
+
+    app.router = router;
 
     app.context.urlGenerator = function () {
       // eslint-disable-next-line prefer-rest-params
@@ -25,6 +27,8 @@ export default function alpLimosa(routerBuilder, controllers) {
 
     app.controllers = controllers;
 
+    app.registerBrowserContextTransformer((initialBrowserContext, ctx) => initialBrowserContext.route = ctx.route);
+
     /**
      *
      * @param {string} controllerName
@@ -32,23 +36,23 @@ export default function alpLimosa(routerBuilder, controllers) {
      * @returns {*}
      */
     app.context.callAction = function (controllerName, actionName) {
-      var route = this.route;
+      const route = this.route;
 
       if (!actionName) {
         actionName = controllerName;
         controllerName = route.controller;
       }
 
-      var controller = controllers.get(controllerName);
+      const controller = controllers.get(controllerName);
       if (!controller) {
         this.status = 404;
-        throw new Error(`Controller not found: ${ controllerName }`);
+        throw new Error(`Controller not found: ${controllerName}`);
       }
 
-      var action = controller[actionName];
+      const action = controller[actionName];
       if (!action /* || !action.isAction*/) {
           this.status = 404;
-          throw new Error(`Action not found: ${ route.controller }.${ route.action }`);
+          throw new Error(`Action not found: ${route.controller}.${route.action}`);
         }
 
       try {
@@ -59,11 +63,11 @@ export default function alpLimosa(routerBuilder, controllers) {
     };
 
     return ctx => {
-      var route = router.find(ctx.path, ctx.language);
+      let route = router.find(ctx.path, ctx.language);
 
       if (!route) {
         ctx.status = 404;
-        throw new Error(`Route not found: ${ ctx.path }`);
+        throw new Error(`Route not found: ${ctx.path}`);
       }
 
       ctx.route = route;
