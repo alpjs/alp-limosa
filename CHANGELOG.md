@@ -1,3 +1,12 @@
+<a name="2.6.1"></a>
+## [2.6.1](https://github.com/alpjs/alp-limosa/compare/v2.6.0...v2.6.1) (2017-04-06)
+
+
+### Bug Fixes
+
+* flow type ([e60ecbe](https://github.com/alpjs/alp-limosa/commit/e60ecbe))
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://github.com/alpjs/alp-limosa/compare/v2.5.0...v2.6.0) (2017-04-03)
 
