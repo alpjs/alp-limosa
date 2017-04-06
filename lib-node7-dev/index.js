@@ -21,18 +21,32 @@ var _flowRuntime2 = _interopRequireDefault(_flowRuntime);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+const AppType = _flowRuntime2.default.type('AppType', _flowRuntime2.default.any());
+
+const ActionType = _flowRuntime2.default.type('ActionType', _flowRuntime2.default.function(_flowRuntime2.default.param('ctx', _flowRuntime2.default.object()), _flowRuntime2.default.return(_flowRuntime2.default.union(_flowRuntime2.default.void(), _flowRuntime2.default.ref('Promise', _flowRuntime2.default.void())))));
+
+const ControllerType = _flowRuntime2.default.type('ControllerType', _flowRuntime2.default.object(_flowRuntime2.default.indexer('key', _flowRuntime2.default.string(), ActionType)));
+
+const ControllersType = _flowRuntime2.default.type('ControllersType', _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), ControllerType));
+
+const RouterBuilderType = _flowRuntime2.default.type('RouterBuilderType', _flowRuntime2.default.function(_flowRuntime2.default.param('builder', _flowRuntime2.default.ref(_limosa.RouterBuilder)), _flowRuntime2.default.return(_flowRuntime2.default.void())));
+
+const ReturnType = _flowRuntime2.default.type('ReturnType', _flowRuntime2.default.function(_flowRuntime2.default.param('app', AppType), _flowRuntime2.default.return(_flowRuntime2.default.function(_flowRuntime2.default.param('ctx', _flowRuntime2.default.object()), _flowRuntime2.default.return(_flowRuntime2.default.ref('Promise', _flowRuntime2.default.void()))))));
+
+const RouteTranslationsConfigType = _flowRuntime2.default.type('RouteTranslationsConfigType', _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.string())));
+
 function alpLimosa(routerBuilder, controllers) {
-  let _routerBuilderType = _flowRuntime2.default.function();
+  const _returnType = _flowRuntime2.default.return(ReturnType);
 
-  let _controllersType = _flowRuntime2.default.ref('Map');
+  _flowRuntime2.default.param('routerBuilder', RouterBuilderType).assert(routerBuilder);
 
-  _flowRuntime2.default.param('routerBuilder', _routerBuilderType).assert(routerBuilder);
+  _flowRuntime2.default.param('controllers', ControllersType).assert(controllers);
 
-  _flowRuntime2.default.param('controllers', _controllersType).assert(controllers);
+  return _returnType.assert(app => {
+    _flowRuntime2.default.param('app', AppType).assert(app);
 
-  return app => {
     const config = app.config;
-    const routeTranslationsConfig = _flowRuntime2.default.ref('Map').assert(config.get('routeTranslations'));
+    const routeTranslationsConfig = RouteTranslationsConfigType.assert(config.get('routeTranslations'));
     const routeTranslations = new _limosa.RoutesTranslations(routeTranslationsConfig);
     const builder = new _limosa.RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
@@ -41,19 +55,27 @@ function alpLimosa(routerBuilder, controllers) {
     app.router = router;
 
     app.context.urlGenerator = function (...args) {
-      return router.urlGenerator(this.language, ...args);
+      let _argsType = _flowRuntime2.default.array(_flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()));
+
+      const _returnType2 = _flowRuntime2.default.return(_flowRuntime2.default.string());
+
+      _flowRuntime2.default.rest('args', _argsType).assert(args);
+
+      return _returnType2.assert(router.urlGenerator(this.language, ...args));
     };
 
     app.context.redirectTo = function (to, params) {
       let _toType = _flowRuntime2.default.string();
 
-      let _paramsType = _flowRuntime2.default.nullable(_flowRuntime2.default.object());
+      let _paramsType = _flowRuntime2.default.nullable(_flowRuntime2.default.object(_flowRuntime2.default.indexer('key', _flowRuntime2.default.string(), _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()))));
+
+      const _returnType3 = _flowRuntime2.default.return(_flowRuntime2.default.any());
 
       _flowRuntime2.default.param('to', _toType).assert(to);
 
       _flowRuntime2.default.param('params', _paramsType).assert(params);
 
-      return this.redirect(router.urlGenerator(this.language, to, params));
+      return _returnType3.assert(this.redirect(router.urlGenerator(this.language, to, params)));
     };
 
     app.controllers = controllers;
@@ -70,6 +92,8 @@ function alpLimosa(routerBuilder, controllers) {
       let _controllerNameType = _flowRuntime2.default.string();
 
       let _actionNameType = _flowRuntime2.default.nullable(_flowRuntime2.default.string());
+
+      const _returnType4 = _flowRuntime2.default.return(_flowRuntime2.default.void());
 
       _flowRuntime2.default.param('controllerName', _controllerNameType).assert(controllerName);
 
@@ -95,13 +119,17 @@ function alpLimosa(routerBuilder, controllers) {
         }
 
       try {
-        return Promise.resolve(controller[actionName].call(null, this));
+        return Promise.resolve(controller[actionName].call(null, this)).then(_arg => _returnType4.assert(_arg));
       } catch (err) {
-        return Promise.reject(err);
+        return Promise.reject(err).then(_arg2 => _returnType4.assert(_arg2));
       }
     };
 
     return ctx => {
+      let _ctxType = _flowRuntime2.default.object();
+
+      _flowRuntime2.default.param('ctx', _ctxType).assert(ctx);
+
       let route = router.find(ctx.path, ctx.language);
 
       if (!route) {
@@ -113,6 +141,6 @@ function alpLimosa(routerBuilder, controllers) {
 
       return ctx.callAction(route.controller, route.action);
     };
-  };
+  });
 }
 //# sourceMappingURL=index.js.map

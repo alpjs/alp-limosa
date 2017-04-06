@@ -1,1 +1,1 @@
-exports.extends = 'pob/babel';
+exports.extends = 'pob/flow';

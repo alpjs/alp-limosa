@@ -11,6 +11,6 @@
   "entries": [
     "index"
   ],
-  "flow": false,
+  "flow": true,
   "doclets": false
 }

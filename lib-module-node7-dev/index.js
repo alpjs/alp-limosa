@@ -1,21 +1,28 @@
-/* global BROWSER */
-
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
 import t from 'flow-runtime';
 export { RouterBuilder } from 'limosa';
 
+const AppType = t.type('AppType', t.any());
+const ActionType = t.type('ActionType', t.function(t.param('ctx', t.object()), t.return(t.union(t.void(), t.ref('Promise', t.void())))));
+const ControllerType = t.type('ControllerType', t.object(t.indexer('key', t.string(), ActionType)));
+const ControllersType = t.type('ControllersType', t.ref('Map', t.string(), ControllerType));
+const RouterBuilderType = t.type('RouterBuilderType', t.function(t.param('builder', t.ref(RouterBuilder)), t.return(t.void())));
+const ReturnType = t.type('ReturnType', t.function(t.param('app', AppType), t.return(t.function(t.param('ctx', t.object()), t.return(t.ref('Promise', t.void()))))));
+const RouteTranslationsConfigType = t.type('RouteTranslationsConfigType', t.ref('Map', t.string(), t.ref('Map', t.string(), t.string())));
+
+
 export default function alpLimosa(routerBuilder, controllers) {
-  let _routerBuilderType = t.function();
+  const _returnType = t.return(ReturnType);
 
-  let _controllersType = t.ref('Map');
+  t.param('routerBuilder', RouterBuilderType).assert(routerBuilder);
+  t.param('controllers', ControllersType).assert(controllers);
 
-  t.param('routerBuilder', _routerBuilderType).assert(routerBuilder);
-  t.param('controllers', _controllersType).assert(controllers);
+  return _returnType.assert(app => {
+    t.param('app', AppType).assert(app);
 
-  return app => {
     const config = app.config;
-    const routeTranslationsConfig = t.ref('Map').assert(config.get('routeTranslations'));
+    const routeTranslationsConfig = RouteTranslationsConfigType.assert(config.get('routeTranslations'));
     const routeTranslations = new RoutesTranslations(routeTranslationsConfig);
     const builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
@@ -24,18 +31,26 @@ export default function alpLimosa(routerBuilder, controllers) {
     app.router = router;
 
     app.context.urlGenerator = function (...args) {
-      return router.urlGenerator(this.language, ...args);
+      let _argsType = t.array(t.union(t.string(), t.number()));
+
+      const _returnType2 = t.return(t.string());
+
+      t.rest('args', _argsType).assert(args);
+
+      return _returnType2.assert(router.urlGenerator(this.language, ...args));
     };
 
     app.context.redirectTo = function (to, params) {
       let _toType = t.string();
 
-      let _paramsType = t.nullable(t.object());
+      let _paramsType = t.nullable(t.object(t.indexer('key', t.string(), t.union(t.string(), t.number()))));
+
+      const _returnType3 = t.return(t.any());
 
       t.param('to', _toType).assert(to);
       t.param('params', _paramsType).assert(params);
 
-      return this.redirect(router.urlGenerator(this.language, to, params));
+      return _returnType3.assert(this.redirect(router.urlGenerator(this.language, to, params)));
     };
 
     app.controllers = controllers;
@@ -52,6 +67,8 @@ export default function alpLimosa(routerBuilder, controllers) {
       let _controllerNameType = t.string();
 
       let _actionNameType = t.nullable(t.string());
+
+      const _returnType4 = t.return(t.void());
 
       t.param('controllerName', _controllerNameType).assert(controllerName);
       t.param('actionName', _actionNameType).assert(actionName);
@@ -76,13 +93,17 @@ export default function alpLimosa(routerBuilder, controllers) {
         }
 
       try {
-        return Promise.resolve(controller[actionName].call(null, this));
+        return Promise.resolve(controller[actionName].call(null, this)).then(_arg => _returnType4.assert(_arg));
       } catch (err) {
-        return Promise.reject(err);
+        return Promise.reject(err).then(_arg2 => _returnType4.assert(_arg2));
       }
     };
 
     return ctx => {
+      let _ctxType = t.object();
+
+      t.param('ctx', _ctxType).assert(ctx);
+
       let route = router.find(ctx.path, ctx.language);
 
       if (!route) {
@@ -94,6 +115,6 @@ export default function alpLimosa(routerBuilder, controllers) {
 
       return ctx.callAction(route.controller, route.action);
     };
-  };
+  });
 }
 //# sourceMappingURL=index.js.map

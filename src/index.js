@@ -1,13 +1,22 @@
-/* global BROWSER */
-
 import { RouterBuilder, RoutesTranslations } from 'limosa';
 
 export { RouterBuilder } from 'limosa';
 
-export default function alpLimosa(routerBuilder: Function, controllers: Map) {
-  return (app) => {
+type AppType = any;
+type ActionType = (ctx: Object) => void | Promise<void>;
+type ControllerType = { [string]: ActionType };
+type ControllersType = Map<string, ControllerType>;
+type RouterBuilderType = (builder: RouterBuilder) => void;
+type ReturnType = (app: AppType) => (ctx: Object) => Promise<void>;
+type RouteTranslationsConfigType = Map<string, Map<string, string>>;
+
+export default function alpLimosa(
+  routerBuilder: RouterBuilderType,
+  controllers: ControllersType
+): ReturnType {
+  return (app: AppType) => {
     const config = app.config;
-    const routeTranslationsConfig: Map = config.get('routeTranslations');
+    const routeTranslationsConfig: RouteTranslationsConfigType = config.get('routeTranslations');
     const routeTranslations = new RoutesTranslations(routeTranslationsConfig);
     const builder = new RouterBuilder(routeTranslations, config.get('availableLanguages'));
     routerBuilder(builder);
@@ -15,11 +24,11 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
 
     app.router = router;
 
-    app.context.urlGenerator = function (...args) {
+    app.context.urlGenerator = function (...args: Array<string | number>): string {
       return router.urlGenerator(this.language, ...args);
     };
 
-    app.context.redirectTo = function (to: string, params: ?Object) {
+    app.context.redirectTo = function (to: string, params: ?{ [string]: string | number }): any {
       return this.redirect(router.urlGenerator(this.language, to, params));
     };
 
@@ -37,7 +46,7 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
      * @param {string} [actionName]
      * @returns {*}
      */
-    app.context.callAction = function (controllerName: string, actionName: ?string) {
+    app.context.callAction = function (controllerName: string, actionName: ?string): Promise<void> {
       const route = this.route;
 
       if (!actionName) {
@@ -64,7 +73,7 @@ export default function alpLimosa(routerBuilder: Function, controllers: Map) {
       }
     };
 
-    return (ctx) => {
+    return (ctx: Object) => {
       let route = router.find(ctx.path, ctx.language);
 
       if (!route) {
