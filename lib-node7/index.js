@@ -25,13 +25,11 @@ function alpLimosa(routerBuilder, controllers) {
 
     app.router = router;
 
-    app.context.urlGenerator = function () {
-      // eslint-disable-next-line prefer-rest-params
-      return router.urlGenerator(this.language, ...arguments);
+    app.context.urlGenerator = function (...args) {
+      return router.urlGenerator(this.language, ...args);
     };
 
     app.context.redirectTo = function (to, params) {
-      // eslint-disable-next-line prefer-rest-params
       return this.redirect(router.urlGenerator(this.language, to, params));
     };
 
