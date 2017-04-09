@@ -1,3 +1,12 @@
+<a name="2.6.2"></a>
+## [2.6.2](https://github.com/alpjs/alp-limosa/compare/v2.6.1...v2.6.2) (2017-04-09)
+
+
+### Bug Fixes
+
+* UrlGeneratorParamsType ([9c52d44](https://github.com/alpjs/alp-limosa/commit/9c52d44))
+
+
 <a name="2.6.1"></a>
 ## [2.6.1](https://github.com/alpjs/alp-limosa/compare/v2.6.0...v2.6.1) (2017-04-06)
 
