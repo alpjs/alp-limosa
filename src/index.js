@@ -9,6 +9,12 @@ type ControllersType = Map<string, ControllerType>;
 type RouterBuilderType = (builder: RouterBuilder) => void;
 type ReturnType = (app: AppType) => (ctx: Object) => Promise<void>;
 type RouteTranslationsConfigType = Map<string, Map<string, string>>;
+type UrlGeneratorParamsType = {
+  extension: ?string,
+  queryString: ?string,
+  hash: ?string,
+  [string]: string | number,
+};
 
 export default function alpLimosa(
   routerBuilder: RouterBuilderType,
@@ -24,11 +30,14 @@ export default function alpLimosa(
 
     app.router = router;
 
-    app.context.urlGenerator = function (...args: Array<string | number>): string {
-      return router.urlGenerator(this.language, ...args);
+    app.context.urlGenerator = function (
+      routeKey: string,
+      params: ?UrlGeneratorParamsType,
+    ): string {
+      return router.urlGenerator(this.language, routeKey, params);
     };
 
-    app.context.redirectTo = function (to: string, params: ?{ [string]: string | number }): any {
+    app.context.redirectTo = function (to: string, params: ?UrlGeneratorParamsType): any {
       return this.redirect(router.urlGenerator(this.language, to, params));
     };
 

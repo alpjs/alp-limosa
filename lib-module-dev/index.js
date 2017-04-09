@@ -10,6 +10,7 @@ var ControllersType = t.type('ControllersType', t.ref('Map', t.string(), Control
 var RouterBuilderType = t.type('RouterBuilderType', t.function(t.param('builder', t.ref(RouterBuilder)), t.return(t.void())));
 var ReturnType = t.type('ReturnType', t.function(t.param('app', AppType), t.return(t.function(t.param('ctx', t.object()), t.return(t.ref('Promise', t.void()))))));
 var RouteTranslationsConfigType = t.type('RouteTranslationsConfigType', t.ref('Map', t.string(), t.ref('Map', t.string(), t.string())));
+var UrlGeneratorParamsType = t.type('UrlGeneratorParamsType', t.object(t.property('extension', t.nullable(t.string())), t.property('queryString', t.nullable(t.string())), t.property('hash', t.nullable(t.string())), t.indexer('key', t.string(), t.union(t.string(), t.number()))));
 
 
 export default function alpLimosa(routerBuilder, controllers) {
@@ -30,29 +31,28 @@ export default function alpLimosa(routerBuilder, controllers) {
 
     app.router = router;
 
-    app.context.urlGenerator = function () {
-      var _argsType = t.array(t.union(t.string(), t.number()));
+    app.context.urlGenerator = function (routeKey, params) {
+      var _routeKeyType = t.string();
+
+      var _paramsType = t.nullable(UrlGeneratorParamsType);
 
       var _returnType2 = t.return(t.string());
 
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
+      t.param('routeKey', _routeKeyType).assert(routeKey);
+      t.param('params', _paramsType).assert(params);
 
-      t.rest('args', _argsType).assert(args);
-
-      return _returnType2.assert(router.urlGenerator.apply(router, [this.language].concat(args)));
+      return _returnType2.assert(router.urlGenerator(this.language, routeKey, params));
     };
 
     app.context.redirectTo = function (to, params) {
       var _toType = t.string();
 
-      var _paramsType = t.nullable(t.object(t.indexer('key', t.string(), t.union(t.string(), t.number()))));
+      var _paramsType2 = t.nullable(UrlGeneratorParamsType);
 
       var _returnType3 = t.return(t.any());
 
       t.param('to', _toType).assert(to);
-      t.param('params', _paramsType).assert(params);
+      t.param('params', _paramsType2).assert(params);
 
       return _returnType3.assert(this.redirect(router.urlGenerator(this.language, to, params)));
     };

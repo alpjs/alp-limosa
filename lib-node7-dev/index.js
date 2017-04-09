@@ -35,6 +35,8 @@ const ReturnType = _flowRuntime2.default.type('ReturnType', _flowRuntime2.defaul
 
 const RouteTranslationsConfigType = _flowRuntime2.default.type('RouteTranslationsConfigType', _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.ref('Map', _flowRuntime2.default.string(), _flowRuntime2.default.string())));
 
+const UrlGeneratorParamsType = _flowRuntime2.default.type('UrlGeneratorParamsType', _flowRuntime2.default.object(_flowRuntime2.default.property('extension', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('queryString', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.property('hash', _flowRuntime2.default.nullable(_flowRuntime2.default.string())), _flowRuntime2.default.indexer('key', _flowRuntime2.default.string(), _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()))));
+
 function alpLimosa(routerBuilder, controllers) {
   const _returnType = _flowRuntime2.default.return(ReturnType);
 
@@ -54,26 +56,30 @@ function alpLimosa(routerBuilder, controllers) {
 
     app.router = router;
 
-    app.context.urlGenerator = function (...args) {
-      let _argsType = _flowRuntime2.default.array(_flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()));
+    app.context.urlGenerator = function (routeKey, params) {
+      let _routeKeyType = _flowRuntime2.default.string();
+
+      let _paramsType = _flowRuntime2.default.nullable(UrlGeneratorParamsType);
 
       const _returnType2 = _flowRuntime2.default.return(_flowRuntime2.default.string());
 
-      _flowRuntime2.default.rest('args', _argsType).assert(args);
+      _flowRuntime2.default.param('routeKey', _routeKeyType).assert(routeKey);
 
-      return _returnType2.assert(router.urlGenerator(this.language, ...args));
+      _flowRuntime2.default.param('params', _paramsType).assert(params);
+
+      return _returnType2.assert(router.urlGenerator(this.language, routeKey, params));
     };
 
     app.context.redirectTo = function (to, params) {
       let _toType = _flowRuntime2.default.string();
 
-      let _paramsType = _flowRuntime2.default.nullable(_flowRuntime2.default.object(_flowRuntime2.default.indexer('key', _flowRuntime2.default.string(), _flowRuntime2.default.union(_flowRuntime2.default.string(), _flowRuntime2.default.number()))));
+      let _paramsType2 = _flowRuntime2.default.nullable(UrlGeneratorParamsType);
 
       const _returnType3 = _flowRuntime2.default.return(_flowRuntime2.default.any());
 
       _flowRuntime2.default.param('to', _toType).assert(to);
 
-      _flowRuntime2.default.param('params', _paramsType).assert(params);
+      _flowRuntime2.default.param('params', _paramsType2).assert(params);
 
       return _returnType3.assert(this.redirect(router.urlGenerator(this.language, to, params)));
     };

@@ -13,8 +13,8 @@ export default function alpLimosa(routerBuilder, controllers) {
 
     app.router = router;
 
-    app.context.urlGenerator = function (...args) {
-      return router.urlGenerator(this.language, ...args);
+    app.context.urlGenerator = function (routeKey, params) {
+      return router.urlGenerator(this.language, routeKey, params);
     };
 
     app.context.redirectTo = function (to, params) {
